@@ -10,7 +10,23 @@ const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+
+// CORS configuration for production
+const corsOptions = {
+  origin: [
+    'http://localhost:3000', // Local development
+    'https://healthcare-symptom-checker-react.vercel.app', // Update with your actual Vercel URL
+    /\.vercel\.app$/, // Any Vercel subdomain
+    /\.onrender\.com$/, // Any Render subdomain
+    '*' // Temporary: Allow all origins for debugging
+  ],
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -713,7 +729,14 @@ app.get('/api/health', (req, res) => {
         status: 'healthy',
         timestamp: new Date().toISOString(),
         service: 'Healthcare Symptom Checker API',
-        database: 'connected'
+        version: '1.0.0',
+        environment: process.env.NODE_ENV || 'development',
+        database: 'connected',
+        features: {
+            symptom_analysis: 'active',
+            medical_categories: 10,
+            dynamic_responses: 'enabled'
+        }
     });
 });
 
