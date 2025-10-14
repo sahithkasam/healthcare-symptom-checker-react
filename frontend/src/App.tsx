@@ -39,7 +39,8 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  const API_BASE_URL = 'http://localhost:8000/api';
+// Configuration
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
