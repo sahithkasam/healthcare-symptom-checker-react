@@ -61,13 +61,21 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api
         requestData.gender = gender;
       }
 
+      console.log('Making request to:', `${API_BASE_URL}/analyze-symptoms`);
+      console.log('Request data:', requestData);
+
       const response = await axios.post(`${API_BASE_URL}/analyze-symptoms`, requestData);
       setResults(response.data);
     } catch (err: any) {
+      console.error('API Error:', err);
+      console.error('API Base URL:', API_BASE_URL);
+      
       if (err.response?.data?.message) {
         setError(err.response.data.message);
       } else if (err.response?.data?.error) {
         setError(err.response.data.error);
+      } else if (err.message) {
+        setError(`Network error: ${err.message}`);
       } else {
         setError('An error occurred while analyzing symptoms. Please try again.');
       }
