@@ -117,60 +117,45 @@ class SymptomAnalyzer {
     getMockResponse(symptoms) {
         const symptomLower = symptoms.toLowerCase();
         
-        if (symptomLower.includes('headache') || symptomLower.includes('fever') || symptomLower.includes('fatigue')) {
-            return {
-                conditions: [
-                    {
-                        name: "Viral Upper Respiratory Infection",
-                        probability: "High (70-85%)",
-                        description: "Common viral infection affecting the upper respiratory tract, causing systemic symptoms like fever, headache, and fatigue.",
-                        next_steps: [
-                            "Rest and stay well-hydrated with plenty of fluids",
-                            "Use over-the-counter pain relievers as directed on packaging",
-                            "Monitor temperature and symptoms progression",
-                            "Consult healthcare provider if symptoms worsen or persist beyond 7-10 days"
-                        ],
-                        urgency: "low"
-                    },
-                    {
-                        name: "Seasonal Influenza",
-                        probability: "Medium (40-60%)",
-                        description: "Influenza virus infection causing systemic symptoms including fever, fatigue, headache, and body aches.",
-                        next_steps: [
-                            "Rest and increase fluid intake significantly",
-                            "Consider antiviral medication if within 48 hours of symptom onset",
-                            "Use symptom relief medications as appropriate",
-                            "Seek medical attention if high fever persists or breathing difficulties develop"
-                        ],
-                        urgency: "medium"
-                    },
-                    {
-                        name: "Stress-Related Physical Symptoms",
-                        probability: "Low (20-30%)",
-                        description: "Physical symptoms that can result from psychological stress, anxiety, or lifestyle factors.",
-                        next_steps: [
-                            "Evaluate recent stress levels and significant life changes",
-                            "Practice stress reduction techniques like meditation or deep breathing",
-                            "Ensure adequate sleep (7-9 hours) and proper nutrition",
-                            "Consider counseling or stress management resources if symptoms persist"
-                        ],
-                        urgency: "low"
-                    }
-                ],
-                red_flags: [
-                    "High fever above 103°F (39.4°C)",
-                    "Difficulty breathing or shortness of breath",
-                    "Severe headache with neck stiffness or confusion",
-                    "Persistent vomiting preventing fluid intake",
-                    "Signs of severe dehydration"
-                ],
-                general_advice: "Monitor symptoms closely and maintain good hygiene practices to prevent spread if infectious. Keep a symptom diary to track progression.",
-                when_to_seek_help: "Contact a healthcare provider if symptoms worsen significantly, persist beyond 10 days, or if you develop any of the red flag symptoms listed above."
-            };
+        // Define symptom patterns and their corresponding conditions
+        const symptomPatterns = {
+            // Respiratory symptoms
+            respiratory: ['cough', 'shortness', 'chest', 'breathing', 'wheeze', 'phlegm', 'sputum'],
+            // Fever and flu-like
+            fluLike: ['fever', 'chills', 'body ache', 'muscle pain', 'fatigue', 'tired'],
+            // Headache and neurological
+            neurological: ['headache', 'migraine', 'dizzy', 'nausea', 'confusion', 'neck stiff'],
+            // Gastrointestinal
+            gastrointestinal: ['stomach', 'nausea', 'vomit', 'diarrhea', 'constipation', 'abdominal', 'belly'],
+            // Skin conditions
+            skin: ['rash', 'itchy', 'red', 'swollen', 'bump', 'spot', 'dry skin'],
+            // Joint and muscle pain
+            musculoskeletal: ['joint', 'back pain', 'knee', 'shoulder', 'muscle', 'stiff', 'ache'],
+            // Cardiovascular
+            cardiac: ['chest pain', 'heart', 'palpitation', 'irregular beat', 'pressure'],
+            // Sleep and mental health
+            mental: ['insomnia', 'sleep', 'anxiety', 'stress', 'depression', 'mood'],
+            // Ear, nose, throat
+            ent: ['sore throat', 'ear', 'runny nose', 'congestion', 'sneezing', 'throat'],
+            // Eye symptoms
+            eye: ['eye', 'vision', 'blurry', 'red eye', 'tear', 'light sensitive']
+        };
+
+        // Function to check which category symptoms belong to
+        function categorizeSymptoms(symptoms) {
+            const categories = [];
+            for (const [category, keywords] of Object.entries(symptomPatterns)) {
+                if (keywords.some(keyword => symptoms.includes(keyword))) {
+                    categories.push(category);
+                }
+            }
+            return categories;
         }
+
+        const categories = categorizeSymptoms(symptomLower);
         
         // Respiratory symptoms
-        if (symptomLower.includes('cough') || symptomLower.includes('shortness') || symptomLower.includes('chest')) {
+        if (categories.includes('respiratory')) {
             return {
                 conditions: [
                     {
@@ -186,30 +171,390 @@ class SymptomAnalyzer {
                         urgency: "low"
                     },
                     {
-                        name: "Asthma Exacerbation",
-                        probability: "Medium (30-45%)",
-                        description: "Temporary worsening of asthma symptoms affecting breathing.",
+                        name: "Upper Respiratory Infection",
+                        probability: "Medium (40-60%)",
+                        description: "Common viral infection affecting the upper respiratory tract.",
                         next_steps: [
-                            "Use rescue inhaler as prescribed",
-                            "Identify and avoid triggers",
-                            "Monitor peak flow if available",
-                            "Seek immediate care if breathing becomes severely difficult"
+                            "Get plenty of rest and fluids",
+                            "Use saline nasal rinses",
+                            "Consider over-the-counter decongestants",
+                            "Monitor for worsening symptoms"
                         ],
-                        urgency: "high"
+                        urgency: "low"
                     }
                 ],
                 red_flags: [
                     "Severe difficulty breathing",
                     "Chest pain with breathing",
                     "Blue lips or fingernails",
-                    "Cannot speak in full sentences due to breathlessness"
+                    "High fever with cough"
                 ],
-                general_advice: "Respiratory symptoms can indicate various conditions. Pay attention to breathing patterns and seek help for severe symptoms.",
-                when_to_seek_help: "Seek immediate medical attention for severe breathing difficulties. Contact your healthcare provider for persistent cough or worsening symptoms."
+                general_advice: "Respiratory symptoms often resolve with rest and supportive care. Avoid smoking and secondhand smoke.",
+                when_to_seek_help: "Seek immediate care for severe breathing difficulties. Contact your provider for persistent symptoms beyond 10 days."
             };
         }
 
-        // Default response
+        // Gastrointestinal symptoms
+        if (categories.includes('gastrointestinal')) {
+            return {
+                conditions: [
+                    {
+                        name: "Viral Gastroenteritis",
+                        probability: "High (65-80%)",
+                        description: "Common viral infection causing inflammation of the stomach and intestines.",
+                        next_steps: [
+                            "Stay hydrated with clear fluids",
+                            "Follow the BRAT diet (bananas, rice, applesauce, toast)",
+                            "Rest and avoid dairy temporarily",
+                            "Gradually return to normal diet as symptoms improve"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Food Poisoning",
+                        probability: "Medium (30-50%)",
+                        description: "Illness caused by consuming contaminated food or beverages.",
+                        next_steps: [
+                            "Maintain hydration with electrolyte solutions",
+                            "Avoid solid foods until vomiting stops",
+                            "Monitor for signs of dehydration",
+                            "Consider probiotics after acute phase"
+                        ],
+                        urgency: "medium"
+                    }
+                ],
+                red_flags: [
+                    "Signs of severe dehydration",
+                    "Blood in vomit or stool",
+                    "High fever with abdominal pain",
+                    "Severe abdominal cramping"
+                ],
+                general_advice: "Most gastrointestinal illnesses are self-limiting. Focus on hydration and gradual food reintroduction.",
+                when_to_seek_help: "Seek care for signs of dehydration, blood in stool/vomit, or symptoms lasting more than 3 days."
+            };
+        }
+
+        // Neurological symptoms (headache, dizziness)
+        if (categories.includes('neurological')) {
+            return {
+                conditions: [
+                    {
+                        name: "Tension Headache",
+                        probability: "High (70-85%)",
+                        description: "Most common type of headache, often related to stress, fatigue, or muscle tension.",
+                        next_steps: [
+                            "Apply hot or cold compress to head/neck",
+                            "Practice relaxation techniques",
+                            "Use over-the-counter pain relievers as directed",
+                            "Maintain regular sleep schedule"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Migraine",
+                        probability: "Medium (35-50%)",
+                        description: "Neurological condition causing severe headaches, often with sensitivity to light and sound.",
+                        next_steps: [
+                            "Rest in a dark, quiet room",
+                            "Apply cold compress to forehead",
+                            "Stay hydrated and avoid triggers",
+                            "Consider prescription migraine medications"
+                        ],
+                        urgency: "medium"
+                    }
+                ],
+                red_flags: [
+                    "Sudden severe headache unlike any before",
+                    "Headache with fever and neck stiffness",
+                    "Headache with vision changes",
+                    "Confusion or difficulty speaking"
+                ],
+                general_advice: "Track headache patterns and potential triggers. Maintain regular sleep and meal schedules.",
+                when_to_seek_help: "Seek immediate care for sudden severe headaches or headaches with neurological symptoms."
+            };
+        }
+
+        // Musculoskeletal symptoms
+        if (categories.includes('musculoskeletal')) {
+            return {
+                conditions: [
+                    {
+                        name: "Muscle Strain",
+                        probability: "High (60-75%)",
+                        description: "Overstretching or tearing of muscle fibers, often due to physical activity or sudden movement.",
+                        next_steps: [
+                            "Apply ice for first 24-48 hours",
+                            "Rest the affected area",
+                            "Use over-the-counter anti-inflammatory medications",
+                            "Gentle stretching after initial inflammation subsides"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Arthritis Flare-up",
+                        probability: "Medium (30-45%)",
+                        description: "Inflammation of joints causing pain, stiffness, and potential swelling.",
+                        next_steps: [
+                            "Apply heat or cold as preferred",
+                            "Gentle range-of-motion exercises",
+                            "Anti-inflammatory medications as prescribed",
+                            "Consider physical therapy consultation"
+                        ],
+                        urgency: "low"
+                    }
+                ],
+                red_flags: [
+                    "Severe joint swelling and redness",
+                    "Inability to bear weight or use affected area",
+                    "Signs of infection at injury site",
+                    "Numbness or tingling"
+                ],
+                general_advice: "Most muscle and joint pain improves with rest and conservative treatment. Stay active within pain limits.",
+                when_to_seek_help: "Contact provider for severe pain, signs of infection, or symptoms not improving after a week."
+            };
+        }
+
+        // Skin conditions
+        if (categories.includes('skin')) {
+            return {
+                conditions: [
+                    {
+                        name: "Contact Dermatitis",
+                        probability: "High (55-70%)",
+                        description: "Skin reaction caused by contact with an irritant or allergen.",
+                        next_steps: [
+                            "Identify and avoid the triggering substance",
+                            "Apply cool compresses to affected area",
+                            "Use gentle, fragrance-free moisturizers",
+                            "Consider topical corticosteroids for severe itching"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Eczema Flare-up",
+                        probability: "Medium (35-50%)",
+                        description: "Chronic skin condition causing dry, itchy, and inflamed skin patches.",
+                        next_steps: [
+                            "Moisturize frequently with thick creams",
+                            "Avoid known triggers and harsh soaps",
+                            "Use prescribed topical medications",
+                            "Keep fingernails short to prevent scratching"
+                        ],
+                        urgency: "low"
+                    }
+                ],
+                red_flags: [
+                    "Signs of skin infection (pus, red streaks)",
+                    "Rapid spreading of rash",
+                    "Difficulty breathing with skin symptoms",
+                    "Fever accompanying skin changes"
+                ],
+                general_advice: "Most skin conditions improve with gentle care and avoiding irritants. Keep skin moisturized.",
+                when_to_seek_help: "Seek care for signs of infection, rapidly spreading rashes, or severe symptoms affecting daily life."
+            };
+        }
+
+        // Flu-like symptoms
+        if (categories.includes('fluLike')) {
+            return {
+                conditions: [
+                    {
+                        name: "Viral Upper Respiratory Infection",
+                        probability: "High (70-85%)",
+                        description: "Common viral infection affecting the upper respiratory tract, causing systemic symptoms.",
+                        next_steps: [
+                            "Rest and stay well-hydrated with plenty of fluids",
+                            "Use over-the-counter pain relievers as directed",
+                            "Monitor temperature and symptoms progression",
+                            "Maintain good hygiene to prevent spread"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Seasonal Influenza",
+                        probability: "Medium (40-60%)",
+                        description: "Influenza virus infection causing systemic symptoms including fever, fatigue, and body aches.",
+                        next_steps: [
+                            "Rest and increase fluid intake significantly",
+                            "Consider antiviral medication if within 48 hours of onset",
+                            "Use symptom relief medications as appropriate",
+                            "Isolate to prevent spreading to others"
+                        ],
+                        urgency: "medium"
+                    }
+                ],
+                red_flags: [
+                    "High fever above 103°F (39.4°C)",
+                    "Difficulty breathing or shortness of breath",
+                    "Persistent vomiting preventing fluid intake",
+                    "Signs of severe dehydration"
+                ],
+                general_advice: "Most viral infections resolve with rest and supportive care. Maintain good hygiene practices.",
+                when_to_seek_help: "Contact provider for high fever, difficulty breathing, or symptoms not improving after 7-10 days."
+            };
+        }
+
+        // ENT (Ear, Nose, Throat) symptoms
+        if (categories.includes('ent')) {
+            return {
+                conditions: [
+                    {
+                        name: "Viral Pharyngitis",
+                        probability: "High (65-80%)",
+                        description: "Viral infection of the throat causing soreness and irritation.",
+                        next_steps: [
+                            "Gargle with warm salt water",
+                            "Use throat lozenges or warm tea with honey",
+                            "Stay hydrated and rest your voice",
+                            "Use a humidifier to add moisture to air"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Allergic Rhinitis",
+                        probability: "Medium (40-55%)",
+                        description: "Allergic reaction causing nasal congestion, runny nose, and sneezing.",
+                        next_steps: [
+                            "Identify and avoid allergens if possible",
+                            "Use antihistamines as directed",
+                            "Try nasal saline rinses",
+                            "Consider air purifiers for indoor allergens"
+                        ],
+                        urgency: "low"
+                    }
+                ],
+                red_flags: [
+                    "Difficulty swallowing or breathing",
+                    "High fever with severe throat pain",
+                    "White patches on throat",
+                    "Swollen lymph nodes with fever"
+                ],
+                general_advice: "Most throat and nasal symptoms are viral and resolve on their own. Avoid irritants like smoking.",
+                when_to_seek_help: "Seek care for difficulty swallowing, high fever, or symptoms lasting more than 10 days."
+            };
+        }
+
+        // Cardiac symptoms
+        if (categories.includes('cardiac')) {
+            return {
+                conditions: [
+                    {
+                        name: "Anxiety-Related Chest Discomfort",
+                        probability: "Medium (45-60%)",
+                        description: "Chest discomfort related to anxiety or panic attacks.",
+                        next_steps: [
+                            "Practice deep breathing exercises",
+                            "Try relaxation techniques",
+                            "Avoid caffeine and stimulants",
+                            "Consider stress management counseling"
+                        ],
+                        urgency: "medium"
+                    },
+                    {
+                        name: "Musculoskeletal Chest Pain",
+                        probability: "Medium (35-50%)",
+                        description: "Chest pain from muscle strain or inflammation of chest wall.",
+                        next_steps: [
+                            "Apply heat or ice to affected area",
+                            "Use anti-inflammatory medications",
+                            "Avoid activities that worsen pain",
+                            "Practice good posture"
+                        ],
+                        urgency: "low"
+                    }
+                ],
+                red_flags: [
+                    "Severe crushing chest pain",
+                    "Chest pain with shortness of breath",
+                    "Pain radiating to arm, jaw, or back",
+                    "Chest pain with sweating or nausea"
+                ],
+                general_advice: "Chest pain can have many causes. Any concerning chest pain should be evaluated promptly.",
+                when_to_seek_help: "Seek immediate emergency care for severe chest pain, especially with other cardiac symptoms."
+            };
+        }
+
+        // Mental health symptoms
+        if (categories.includes('mental')) {
+            return {
+                conditions: [
+                    {
+                        name: "Sleep Disorder",
+                        probability: "High (60-75%)",
+                        description: "Difficulty falling asleep, staying asleep, or poor sleep quality.",
+                        next_steps: [
+                            "Maintain consistent sleep schedule",
+                            "Create relaxing bedtime routine",
+                            "Limit screen time before bed",
+                            "Avoid caffeine late in the day"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Stress-Related Symptoms",
+                        probability: "Medium (40-55%)",
+                        description: "Physical and emotional symptoms related to psychological stress.",
+                        next_steps: [
+                            "Practice stress reduction techniques",
+                            "Consider counseling or therapy",
+                            "Maintain regular exercise routine",
+                            "Connect with support systems"
+                        ],
+                        urgency: "medium"
+                    }
+                ],
+                red_flags: [
+                    "Thoughts of self-harm",
+                    "Severe mood changes affecting daily function",
+                    "Complete inability to sleep for days",
+                    "Hallucinations or delusions"
+                ],
+                general_advice: "Mental health is as important as physical health. Don't hesitate to seek professional support.",
+                when_to_seek_help: "Contact mental health professionals for persistent symptoms or any thoughts of self-harm."
+            };
+        }
+
+        // Eye symptoms
+        if (categories.includes('eye')) {
+            return {
+                conditions: [
+                    {
+                        name: "Viral Conjunctivitis",
+                        probability: "High (60-75%)",
+                        description: "Viral infection of the eye causing redness, tearing, and discharge.",
+                        next_steps: [
+                            "Apply cool compresses to eyes",
+                            "Avoid touching or rubbing eyes",
+                            "Use artificial tears for comfort",
+                            "Practice good hand hygiene"
+                        ],
+                        urgency: "low"
+                    },
+                    {
+                        name: "Dry Eye Syndrome",
+                        probability: "Medium (35-50%)",
+                        description: "Insufficient tear production or poor tear quality causing eye discomfort.",
+                        next_steps: [
+                            "Use preservative-free artificial tears",
+                            "Take breaks from screen time",
+                            "Use a humidifier",
+                            "Avoid windy or dry environments"
+                        ],
+                        urgency: "low"
+                    }
+                ],
+                red_flags: [
+                    "Sudden vision loss",
+                    "Severe eye pain with vision changes",
+                    "Flashing lights or floaters",
+                    "Chemical exposure to eyes"
+                ],
+                general_advice: "Most eye irritation resolves with gentle care. Protect eyes from irritants and UV light.",
+                when_to_seek_help: "Seek immediate care for sudden vision changes or severe eye pain."
+            };
+        }
+
+        // Default response for unrecognized symptoms
         return {
             conditions: [
                 {
