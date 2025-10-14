@@ -42,6 +42,12 @@ const App: React.FC = () => {
 // Configuration
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
+console.log('Environment variables:', {
+  REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+  NODE_ENV: process.env.NODE_ENV,
+  API_BASE_URL: API_BASE_URL
+});
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -67,18 +73,29 @@ const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api
       const response = await axios.post(`${API_BASE_URL}/analyze-symptoms`, requestData);
       setResults(response.data);
     } catch (err: any) {
-      console.error('API Error:', err);
-      console.error('API Base URL:', API_BASE_URL);
+      console.error('Full API Error:', err);
+      console.error('Error message:', err.message);
+      console.error('Error code:', err.code);
+      console.error('Request config:', err.config);
+      console.error('Response:', err.response);
       
-      if (err.response?.data?.message) {
-        setError(err.response.data.message);
+      let errorMessage = 'An error occurred while analyzing symptoms.';
+      
+      if (err.code === 'ERR_NETWORK') {
+        errorMessage = `Network Error: Cannot connect to ${API_BASE_URL}. Please check if the backend is running.`;
+      } else if (err.response?.status === 404) {
+        errorMessage = `API endpoint not found. Check URL: ${API_BASE_URL}/analyze-symptoms`;
+      } else if (err.response?.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      } else if (err.response?.data?.message) {
+        errorMessage = err.response.data.message;
       } else if (err.response?.data?.error) {
-        setError(err.response.data.error);
+        errorMessage = err.response.data.error;
       } else if (err.message) {
-        setError(`Network error: ${err.message}`);
-      } else {
-        setError('An error occurred while analyzing symptoms. Please try again.');
+        errorMessage = `Error: ${err.message}`;
       }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

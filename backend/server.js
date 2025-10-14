@@ -15,7 +15,7 @@ app.use(helmet());
 const corsOptions = {
   origin: [
     'http://localhost:3000', // Local development
-    'https://healthcare-symptom-checker-react.vercel.app', // Update with your actual Vercel URL
+    'https://healthcare-symptom-checker-react.vercel.app', // Your exact Vercel URL
     /\.vercel\.app$/, // Any Vercel subdomain
     /\.onrender\.com$/, // Any Render subdomain
     '*' // Temporary: Allow all origins for debugging
