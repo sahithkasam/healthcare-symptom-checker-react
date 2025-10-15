@@ -21,6 +21,6 @@
     }
   ],
   "env": {
-    "REACT_APP_API_URL": "https://your-backend-app.onrender.com/api"
+    "REACT_APP_API_URL": "https://healthcare-symptom-checker-react.onrender.com/api"
   }
 }
