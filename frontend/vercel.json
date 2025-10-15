@@ -5,6 +5,16 @@
   "github": {
     "silent": true
   },
+  "security": {
+    "allowedHosts": ["*"],
+    "contentTypeOptions": false,
+    "frameOptions": false,
+    "httpsRedirectStatusCode": 308,
+    "httpsRedirectExcludedHosts": [],
+    "hsts": false,
+    "nosniff": false,
+    "xssProtection": false
+  },
   "functions": {
     "app/api/**/*.js": {
       "includeFiles": "**"
@@ -35,7 +45,7 @@
       "headers": [
         {
           "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
+          "value": "DENY"
         },
         {
           "key": "Access-Control-Allow-Origin",
@@ -44,6 +54,18 @@
         {
           "key": "Access-Control-Allow-Methods",
           "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "*"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "X-Robots-Tag",
+          "value": "index, follow"
         }
       ]
     }
