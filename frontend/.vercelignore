@@ -1,0 +1,15 @@
+# Ignore authentication files
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore auth configs
+auth.config.js
+middleware.js
+middleware.ts
+
+# Ignore private folders
+/private/
+/admin/
+/.auth/

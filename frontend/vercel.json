@@ -1,6 +1,15 @@
 {
   "name": "healthcare-symptom-checker-frontend",
   "version": 2,
+  "public": true,
+  "github": {
+    "silent": true
+  },
+  "functions": {
+    "app/api/**/*.js": {
+      "includeFiles": "**"
+    }
+  },
   "builds": [
     {
       "src": "package.json",
@@ -18,6 +27,25 @@
     {
       "src": "/(.*)",
       "dest": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        }
+      ]
     }
   ],
   "env": {
