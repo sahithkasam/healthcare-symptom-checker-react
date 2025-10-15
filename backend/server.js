@@ -11,22 +11,13 @@ const PORT = process.env.PORT || 8000;
 // Middleware
 app.use(helmet());
 
-// CORS configuration for production
-const corsOptions = {
-  origin: [
-    'http://localhost:3000', // Local development
-    'https://healthcare-symptom-checker-react.vercel.app', // Your exact Vercel URL
-    /\.vercel\.app$/, // Any Vercel subdomain
-    /\.onrender\.com$/, // Any Render subdomain
-    '*' // Temporary: Allow all origins for debugging
-  ],
-  credentials: true,
-  optionsSuccessStatus: 200,
+// Temporary: Very permissive CORS for debugging
+app.use(cors({
+  origin: '*',
+  credentials: false,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
-};
-
-app.use(cors(corsOptions));
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
