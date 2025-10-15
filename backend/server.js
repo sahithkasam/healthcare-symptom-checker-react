@@ -732,10 +732,16 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('/api/history', (req, res) => {
+    // Set open access headers
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Cache-Control', 'no-cache');
+    
     const limit = parseInt(req.query.limit) || 10;
     
     db.all(
-        `SELECT symptoms, age, gender, timestamp 
+        `SELECT id, symptoms, age, gender, timestamp 
          FROM symptom_queries 
          ORDER BY timestamp DESC 
          LIMIT ?`,
@@ -745,20 +751,105 @@ app.get('/api/history', (req, res) => {
                 console.error('Database query error:', err);
                 return res.status(500).json({
                     error: 'Database error',
-                    message: 'Could not retrieve query history'
+                    message: 'Could not retrieve query history',
+                    open_access: true
                 });
             }
             
             res.json({
+                message: 'Symptom Query History - Open Access',
                 recent_queries: rows.map(row => ({
+                    id: row.id,
                     symptoms: row.symptoms,
                     age: row.age,
                     gender: row.gender,
                     timestamp: row.timestamp
                 })),
                 total_returned: rows.length,
+                total_available: rows.length,
+                access_info: 'This endpoint is publicly accessible for demonstration',
+                api_info: {
+                    endpoint: '/api/history',
+                    method: 'GET',
+                    parameters: {
+                        limit: 'optional - number of records to return (default: 10)'
+                    }
+                },
                 disclaimer: 'Query history is for demonstration purposes only'
             });
+        }
+    );
+});
+
+// Add a user-friendly HTML view for history
+app.get('/history', (req, res) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    
+    db.all(
+        `SELECT id, symptoms, age, gender, timestamp 
+         FROM symptom_queries 
+         ORDER BY timestamp DESC 
+         LIMIT 20`,
+        [],
+        (err, rows) => {
+            if (err) {
+                return res.status(500).send(`
+                    <html>
+                        <head><title>Database Error</title></head>
+                        <body>
+                            <h1>Database Error</h1>
+                            <p>Could not retrieve query history</p>
+                        </body>
+                    </html>
+                `);
+            }
+            
+            const historyHtml = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Healthcare Symptom Checker - Query History</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+                        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; }
+                        h1 { color: #1e40af; text-align: center; }
+                        .query { border: 1px solid #ddd; margin: 10px 0; padding: 15px; border-radius: 5px; background: #fafafa; }
+                        .symptoms { font-weight: bold; color: #3b82f6; }
+                        .meta { color: #666; font-size: 0.9em; margin-top: 5px; }
+                        .no-data { text-align: center; color: #666; font-style: italic; }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <h1>🏥 Healthcare Symptom Checker - Query History</h1>
+                        <p><strong>Total Queries:</strong> ${rows.length}</p>
+                        <p><strong>API Endpoint:</strong> <a href="/api/history">/api/history</a> (JSON format)</p>
+                        <hr>
+                        ${rows.length === 0 ? 
+                            '<div class="no-data">No symptom queries found. Try submitting symptoms through the main application first.</div>' :
+                            rows.map(row => `
+                                <div class="query">
+                                    <div class="symptoms">Symptoms: ${row.symptoms}</div>
+                                    <div class="meta">
+                                        ID: ${row.id} | 
+                                        Age: ${row.age || 'Not specified'} | 
+                                        Gender: ${row.gender || 'Not specified'} | 
+                                        Time: ${row.timestamp}
+                                    </div>
+                                </div>
+                            `).join('')
+                        }
+                        <hr>
+                        <p style="text-align: center; color: #666; font-size: 0.8em;">
+                            This data is for demonstration purposes only. 
+                            <a href="https://healthcare-symptom-checker-react.vercel.app/">← Back to Main App</a>
+                        </p>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            res.send(historyHtml);
         }
     );
 });
