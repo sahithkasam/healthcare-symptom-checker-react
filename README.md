@@ -1,3 +1,6 @@
+
+Deployed link : https://healthcare-symptom-checker-react.vercel.app/
+
 # Healthcare Symptom Checker - Professional Clinical Interface
 
 A professional healthcare symptom analysis application built with React and Node.js. This clinical decision support system features a professional medical interface and provides differential diagnosis suggestions.
