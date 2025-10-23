@@ -1,4 +1,4 @@
-# 🚀 Healthcare Symptom Checker Deployment Guide
+# Healthcare Symptom Checker Deployment Guide
 
 ## Prerequisites
 - GitHub account connected to Render and Vercel
@@ -72,7 +72,7 @@ REACT_APP_API_URL=https://your-render-url.onrender.com/api
 3. Commit and push changes
 4. Render will auto-redeploy
 
-## 🎯 Final Result
+##  Final Result
 
 ✅ **Backend API**: https://your-app.onrender.com
 ✅ **Frontend App**: https://your-app.vercel.app
