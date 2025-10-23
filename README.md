@@ -2,7 +2,7 @@
 
 A professional healthcare symptom analysis application built with React and Node.js. This clinical decision support system features a professional medical interface and provides differential diagnosis suggestions.
 
-## 🎯 **Project Overview**
+##  **Project Overview**
 
 This healthcare application includes:
 - ✅ **Professional Medical Interface**: Clinical design following healthcare standards
@@ -13,7 +13,7 @@ This healthcare application includes:
 - ✅ **Medical History**: Patient symptom tracking and history
 - ✅ **Healthcare Compliance**: Professional medical terminology and disclaimers
 
-## 🏗️ **Architecture**
+##  **Architecture**
 
 ```
 healthcare-symptom-checker-react/
@@ -30,7 +30,7 @@ healthcare-symptom-checker-react/
     └── package.json           # Frontend dependencies
 ```
 
-## 🚀 **Quick Start**
+##  **Quick Start**
 
 ### **Option 1: Manual Setup**
 
@@ -63,7 +63,7 @@ cd frontend && npm start
 
 3. **Open Application**: http://localhost:3000
 
-## 🎨 **Features**
+## **Features**
 
 ### **Frontend (React + TypeScript)**
 - **Modern UI**: Gradient backgrounds, animations, responsive design
@@ -90,7 +90,7 @@ cd frontend && npm start
 - **Professional Referrals**: Always recommends consulting healthcare providers
 - **Educational Focus**: Consistent messaging about educational purpose only
 
-## 📋 **API Endpoints**
+## **API Endpoints**
 
 ### **POST /api/analyze-symptoms**
 Analyze symptoms and return possible conditions.
@@ -130,7 +130,7 @@ Health check endpoint.
 ### **GET /api/history**
 Get recent query history (with limit parameter).
 
-## 🧠 **LLM Integration**
+## **LLM Integration**
 
 ### **OpenAI Integration**
 1. Get API key from OpenAI
@@ -147,7 +147,7 @@ PORT=8000
 - Perfect for development and demonstration
 - No API key required
 
-## 🎨 **User Interface Showcase**
+## **User Interface Showcase**
 
 ### **Homepage**
 - Beautiful gradient header with medical icon
@@ -172,7 +172,7 @@ PORT=8000
 - **Medical Disclaimer**: Full safety warning
 - **Timestamp**: When analysis was performed
 
-## 🛠️ **Technology Stack**
+##  **Technology Stack**
 
 ### **Frontend**
 - **React 18**: Latest React with hooks
@@ -190,7 +190,7 @@ PORT=8000
 - **CORS**: Cross-origin resource sharing
 - **dotenv**: Environment variable management
 
-## 🧪 **Testing the Application**
+##  **Testing the Application**
 
 ### **Demo Scenarios**
 1. **Common Cold**: "headache, runny nose, fatigue"
@@ -205,14 +205,14 @@ PORT=8000
 - Red flags for serious symptoms
 - Comprehensive medical disclaimers
 
-## 📱 **Mobile Responsiveness**
+##  **Mobile Responsiveness**
 
 - **Responsive Grid**: Form fields stack on mobile
 - **Touch-Friendly**: Large buttons and inputs
 - **Readable Text**: Appropriate font sizes
 - **Optimized Layout**: Content adapts to screen size
 
-## 🔒 **Security & Safety**
+##  **Security & Safety**
 
 ### **Medical Safety**
 - Multiple disclaimer banners
@@ -228,7 +228,7 @@ PORT=8000
 - Environment variable protection
 - Error handling without sensitive data exposure
 
-## 📈 **Production Deployment**
+##  **Production Deployment**
 
 ### **Frontend Build**
 ```bash
@@ -251,7 +251,7 @@ NODE_ENV=production
 CORS_ORIGIN=https://your-frontend-domain.com
 ```
 
-## 🎬 **Demo Ready**
+##  **Demo Ready**
 
 The application is fully ready for demonstration:
 
@@ -266,7 +266,7 @@ The application is fully ready for demonstration:
    - Red flags section
    - Medical disclaimers
 
-## 🎯 **Assignment Requirements Met**
+## **Assignment Requirements Met**
 
 ✅ **Input**: Symptom text input (with optional demographics)
 ✅ **Output**: Probable conditions + recommended next steps
@@ -277,7 +277,7 @@ The application is fully ready for demonstration:
 ✅ **Medical Safety**: Comprehensive disclaimers throughout
 ✅ **Code Quality**: TypeScript, proper error handling, responsive design
 
-## 📞 **Support**
+##  **Support**
 
 The application includes:
 - Comprehensive inline documentation
